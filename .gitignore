@@ -1,0 +1,8 @@
+.venv/
+data/FashionMNIST
+data/FloodNet_dataset
+quickstart.ipynb
+data/image_preprocessing.ipynb
+data/dataset_restructure_and_copy.ipynb
+model.pth
+test.py
