@@ -1,6 +1,6 @@
-from torch.utils.data import Dataset
-import pandas as pd
 import os
+import pandas as pd
+from torch.utils.data import Dataset
 from PIL import Image
 
 class FloodNetDataset(Dataset):
@@ -22,7 +22,7 @@ class FloodNetDataset(Dataset):
     def __getitem__(self, index):
         img_path = os.path.join(self.root_dir, self.data.iloc[index, 0])
         image = Image.open(img_path)
-        label = int(self.data.iloc[index, 1])
+        label = self.data.iloc[index, 1]
 
         if self.transform:
             image = self.transform(image)
