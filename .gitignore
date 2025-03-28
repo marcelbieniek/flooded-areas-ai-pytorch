@@ -6,3 +6,4 @@ data/image_preprocessing.ipynb
 data/dataset_restructure_and_copy.ipynb
 model.pth
 test.py
+trash/
