@@ -1,0 +1,17 @@
+{
+    "train": {
+        "images": 1445,
+        "flooded": 310,
+        "non_flooded": 1135
+    },
+    "test": {
+        "images": 448,
+        "flooded": 93,
+        "non_flooded": 355
+    },
+    "val": {
+        "images": 450,
+        "flooded": 88,
+        "non_flooded": 362
+    }
+}
