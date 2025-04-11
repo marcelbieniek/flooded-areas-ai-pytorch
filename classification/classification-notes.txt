@@ -1,0 +1,14 @@
+maybe do a Environment class?
+
+for classification:
+CUDA device/info
+data transforms
+dataset/data loaders
+move model/data to device
+loss
+optimizer
+training
+testing
+num_epochs
+learning_rate
+metrics
