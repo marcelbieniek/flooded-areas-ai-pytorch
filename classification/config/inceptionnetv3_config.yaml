@@ -1,0 +1,12 @@
+model: inception
+num_classes: 1
+pretrained: true
+aux_logits: true
+loss: bce_with_logits
+optimizer:
+  name: adam
+  lr: 0.001
+metrics: [accuracy]
+train:
+  epochs: 10
+  batch_size: 64

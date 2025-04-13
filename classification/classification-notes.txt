@@ -1,7 +1,11 @@
 maybe do a Environment class?
+CUDA device/info
+num_epochs
+learning_rate
+metrics
+data visualization
 
 for classification:
-CUDA device/info
 data transforms
 dataset/data loaders
 move model/data to device
@@ -9,6 +13,3 @@ loss
 optimizer
 training
 testing
-num_epochs
-learning_rate
-metrics

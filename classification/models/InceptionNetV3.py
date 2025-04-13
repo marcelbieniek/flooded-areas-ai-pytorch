@@ -10,7 +10,7 @@ class InceptionNetV3():
         self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
 
         if self.model.aux_logits:
-            print("replacing aux classifier")
+            # print("replacing aux classifier")
             self.model.AuxLogits.fc = nn.Linear(self.model.AuxLogits.fc.in_features, num_classes)
 
     def train(self, X):
@@ -24,3 +24,9 @@ class InceptionNetV3():
             return loss1 + 0.4 * loss2
         else:
             return loss_fn(model_outputs, y)
+    
+    def parameters(self):
+        return self.model.parameters()
+
+def inception(num_classes, pretrained, aux_logits):
+    return InceptionNetV3(num_classes, pretrained, aux_logits)
