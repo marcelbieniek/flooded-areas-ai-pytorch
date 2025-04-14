@@ -28,5 +28,5 @@ class InceptionNetV3():
     def parameters(self):
         return self.model.parameters()
 
-def inception(num_classes, pretrained, aux_logits):
+def inception(num_classes=10, pretrained=True, aux_logits=True):
     return InceptionNetV3(num_classes, pretrained, aux_logits)
