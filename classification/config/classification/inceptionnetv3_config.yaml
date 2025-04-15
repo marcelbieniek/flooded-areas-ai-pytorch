@@ -1,7 +1,9 @@
-model: inception
-num_classes: 1
-pretrained: true
-aux_logits: true
+model:
+  name: inception
+  params:
+    num_classes: 1
+    pretrained: true
+    aux_logits: true
 loss: bce_with_logits
 optimizer:
   name: adam

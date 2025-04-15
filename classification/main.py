@@ -1,22 +1,36 @@
-from utils.config_parser import load_config
-import models
-import losses
-import optimizers
-import metrics
-
+import torch
+import os
+from utils.config_parser import Config
 from dataloader.dataloader import get_dataloaders
-# from train import train_model
+from train import train_model
+from evaluate import test_model
 
-# config = load_config("config/inceptionnetv3_config.yaml")
-# print(config)
-# inception = getattr(models, config["model"])(config["num_classes"], config["pretrained"], config["aux_logits"])
-# print(inception)
-# loss_fn = getattr(losses, config["loss"])()
-# print(loss_fn)
-# optimizer = getattr(optimizers, config["optimizer"]["name"])(inception.parameters(), config["optimizer"]["lr"])
-# print(optimizer)
-# metrics_fns = [getattr(metrics, name)(**config["metrics"][name]) for name in config['metrics']]
-# print(metrics_fns)
+os.environ["CUDA_VISIBLE_DEVICES"] = "7"
 
-train_data, test_data = get_dataloaders()
+current_cuda_device = None
+print(f"is cuda available: {torch.cuda.is_available()}")
+print(f"cuda device count: {torch.cuda.device_count()}")
+current_cuda_device = torch.cuda.current_device()
+print(f"current cuda device: {current_cuda_device}")
+print(f"current cuda device name: {torch.cuda.get_device_name(current_cuda_device)}")
+
+device = (
+    "cuda" if torch.cuda.is_available()
+    else "mps" if torch.backends.mps.is_available()
+    else "cpu"
+)
+
+print(f"Using {device} device")
+
+config = Config("config/classification/inceptionnetv3_config.yaml")
+
+train_data, test_data = get_dataloaders(config.config["train"]["batch_size"])
 print(train_data, test_data)
+
+epochs = config.config["train"]["epochs"]
+
+for epoch in range(epochs):
+    print(f"-------------- Epoch {epoch+1} --------------")
+    train_model(train_data, config.model, config.loss, config.optimizer, device)
+    test_model(test_data, config.model, device)
+print("Done!")

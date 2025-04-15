@@ -16,7 +16,7 @@ transform = transforms.Compose([
                          std=[0.229, 0.224, 0.225])
 ])
 
-def get_dataloaders():
+def get_dataloaders(batch_size):
     # Create train dataset
     train_images_dir = Path("../data/FloodNet_dataset/train/image")
     train_csv_file = Path("../data/flood_train_rel_paths.csv")

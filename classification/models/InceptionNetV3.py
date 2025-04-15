@@ -27,6 +27,15 @@ class InceptionNetV3():
     
     def parameters(self):
         return self.model.parameters()
+    
+    def train_mode(self):
+        self.model.train()
 
-def inception(num_classes=10, pretrained=True, aux_logits=True):
+    def eval_mode(self):
+        self.model.eval()
+
+    def move_to_device(self, device):
+        self.model = self.model.to(device)
+
+def inception(num_classes, pretrained, aux_logits):
     return InceptionNetV3(num_classes, pretrained, aux_logits)

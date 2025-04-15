@@ -14,3 +14,15 @@ class Xception():
     
     def calculate_loss(self, loss_fn, model_outputs, y):
             return loss_fn(model_outputs, y)
+    
+    def parameters(self):
+        return self.model.parameters()
+    
+    def train_mode(self):
+        self.model.train()
+
+    def move_to_device(self, device):
+        self.model = self.model.to(device)
+
+def xception(num_classes, pretrained):
+    return Xception(num_classes, pretrained)
