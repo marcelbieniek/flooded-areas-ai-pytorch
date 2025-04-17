@@ -4,17 +4,21 @@ model:
     num_classes: 1
     pretrained: true
     aux_logits: true
-loss: bce_with_logits
+loss: dice
 optimizer:
   name: adam
   lr: 0.001
 metrics:
   accuracy:
     task: binary
-    num_classes: 1
+  precision:
+    task: binary
   recall:
-    task: multiclass
-    num_classes: 10
+    task: binary
+  mcc:
+    task: binary
+  cohen_kappa:
+    task: binary
 train:
   epochs: 10
   batch_size: 64

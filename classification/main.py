@@ -5,7 +5,7 @@ from dataloader.dataloader import get_dataloaders
 from train import train_model
 from evaluate import test_model
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "7"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 current_cuda_device = None
 print(f"is cuda available: {torch.cuda.is_available()}")
@@ -23,6 +23,10 @@ device = (
 print(f"Using {device} device")
 
 config = Config("config/classification/inceptionnetv3_config.yaml")
+print(config.model)
+print(config.loss)
+print(config.optimizer)
+print(config.metrics)
 
 train_data, test_data = get_dataloaders(config.config["train"]["batch_size"])
 print(train_data, test_data)
@@ -32,5 +36,5 @@ epochs = config.config["train"]["epochs"]
 for epoch in range(epochs):
     print(f"-------------- Epoch {epoch+1} --------------")
     train_model(train_data, config.model, config.loss, config.optimizer, device)
-    test_model(test_data, config.model, device)
+    test_model(test_data, config.model, config.metrics, device)
 print("Done!")
