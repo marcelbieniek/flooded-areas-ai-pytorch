@@ -3,6 +3,7 @@ from torch import nn
 
 class InceptionNetV3():
     def __init__(self, num_classes: int = 1, pretrained: bool = True, aux_logits: bool = True):
+        self.name = "InceptionNetV3"
         self.num_classes = num_classes
         self.aux_logits = aux_logits
         self.model = torch.hub.load('pytorch/vision:v0.10.0', 'inception_v3', pretrained=pretrained, aux_logits=True) # aux_logits always true here, because of a bug in InceptionNetV3 implementation, argument still has desired effect when calculating loss

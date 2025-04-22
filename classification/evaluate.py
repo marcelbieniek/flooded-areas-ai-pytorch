@@ -1,20 +1,21 @@
 import torch
 from torch.utils.data import DataLoader
+from utils.config_parser import Config
+from utils.logger import TimeLogger, DataLogger
 
-def test_model(dataloader: DataLoader, model, metrics, device):
+def test_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str):
     print("Testing...")
-    # size = len(dataloader.dataset)
-    # print(f"size: {size}")
-    # num_batches = len(dataloader)
-    # print(f"num batches: {num_batches}")
-    model.move_to_device(device)
-    model.eval_mode()
-    # correct = 0
-    # total = 0
+    model = config.model
+    metrics = config.metrics
 
     all_outputs = []
     all_targets = []
 
+    log_name = f"{model.name}_val"
+    timer.start(log_name)
+
+    model.move_to_device(device)
+    model.eval_mode()
     with torch.inference_mode():
         for X, y in dataloader:
             X, y = X.to(device), y.to(device)
@@ -27,10 +28,15 @@ def test_model(dataloader: DataLoader, model, metrics, device):
         outputs_tensor = torch.cat(all_outputs)
         target_tensor = torch.cat(all_targets)
 
-    for metric in metrics:
+    for idx, metric in enumerate(metrics):
         metric = metric.to(device)
         result = metric(outputs_tensor, target_tensor)
-        print(f"{metric}: {result}")
+        logger.log(f"{config.model.name}_{config.metrics_names[idx]}", result.item())
+        print(f"{config.metrics_names[idx]}: {result.item()}")
+
+    if device == 'cuda':
+        torch.cuda.synchronize()
+    timer.end(log_name)
     #         preds = torch.sigmoid(outputs) > 0.5
     #         correct += (preds.squeeze().long() == y).sum().item()
     #         total += y.size(0)

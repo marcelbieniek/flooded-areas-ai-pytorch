@@ -11,6 +11,7 @@ class Config():
         self.loss = self.load_loss()
         self.optimizer = self.load_optimizer()
         self.metrics = self.load_metrics()
+        self.metrics_names = self.get_metrics_names()
 
     def load_config(self, path):
         with open(path) as f:
@@ -27,3 +28,6 @@ class Config():
 
     def load_metrics(self):
         return [getattr(metrics, name)(**self.config["metrics"][name]) for name in self.config['metrics']]
+    
+    def get_metrics_names(self):
+        return [name for name in self.config['metrics']]
