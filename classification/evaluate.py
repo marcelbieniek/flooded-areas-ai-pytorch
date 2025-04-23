@@ -6,8 +6,10 @@ from utils.logger import TimeLogger, DataLogger
 def test_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str):
     print("Testing...")
     model = config.model
+    loss_fn = config.loss
     metrics = config.metrics
 
+    running_loss = 0.0
     all_outputs = []
     all_targets = []
 
@@ -18,27 +20,26 @@ def test_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger
     model.eval_mode()
     with torch.inference_mode():
         for X, y in dataloader:
-            X, y = X.to(device), y.to(device)
+            X, y = X.to(device), y.to(device).float().unsqueeze(1)
 
             outputs = model.train(X)
+            loss = model.calculate_loss(loss_fn, outputs, y)
 
-            all_outputs.append(outputs.squeeze())
+            running_loss += loss.item()
+            all_outputs.append(outputs)
             all_targets.append(y)
 
         outputs_tensor = torch.cat(all_outputs)
         target_tensor = torch.cat(all_targets)
 
+    logger.log(f"{log_name}_loss", running_loss/len(dataloader)) # log average loss
+
     for idx, metric in enumerate(metrics):
         metric = metric.to(device)
         result = metric(outputs_tensor, target_tensor)
-        logger.log(f"{config.model.name}_{config.metrics_names[idx]}", result.item())
+        logger.log(f"{log_name}_{config.metrics_names[idx]}", result.item())
         print(f"{config.metrics_names[idx]}: {result.item()}")
 
     if device == 'cuda':
         torch.cuda.synchronize()
     timer.end(log_name)
-    #         preds = torch.sigmoid(outputs) > 0.5
-    #         correct += (preds.squeeze().long() == y).sum().item()
-    #         total += y.size(0)
-    # # print(f"Test error: \n Accuracy: {(100*correct):>0.1f}%, avg loss: {test_loss:>8f} \n")
-    # print(f"Test error: \n Accuracy: {correct / total * 100:.2f}%")

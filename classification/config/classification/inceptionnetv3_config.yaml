@@ -4,7 +4,7 @@ model:
     num_classes: 1
     pretrained: true
     aux_logits: true
-loss: dice
+loss: bce_with_logits
 optimizer:
   name: adam
   lr: 0.001

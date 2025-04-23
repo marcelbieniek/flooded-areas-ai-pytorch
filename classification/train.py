@@ -8,19 +8,22 @@ def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logge
     model = config.model
     loss_fn = config.loss
     optimizer = config.optimizer
+    metrics = config.metrics
 
     size = len(dataloader.dataset)
     current = 0
-    batch_losses = []
+    running_loss = 0.0
+    all_outputs = []
+    all_targets = []
 
-    timer_name = f"{model.name}_train"
-    timer.start(timer_name)
+    log_name = f"{model.name}_train"
+    timer.start(log_name)
 
     model.move_to_device(device)
     model.train_mode()
     for batch, (X, y) in enumerate(dataloader):
         X, y = X.to(device), y.to(device).float().unsqueeze(1)
-        # compute prediction error
+
         optimizer.zero_grad()
 
         outputs = model.train(X)
@@ -30,13 +33,27 @@ def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logge
         loss.backward()
         optimizer.step()
 
+        if len(outputs) > 1:
+            all_outputs.append(outputs[0])
+        else:
+            all_outputs.append(outputs)
+        all_targets.append(y)
+
         # if batch % 100 == 0:
         loss, current = loss.item(), current + len(X)
-        batch_losses.append(loss)
+        running_loss += loss
         print(f"batch: {batch}, loss: {loss:>7f} [{current:>5d}/{size:>5d}]")
 
-    logger.log(f"{model.name}_train_loss", sum(batch_losses)/len(batch_losses)) # log average epoch loss
+    outputs_tensor = torch.cat(all_outputs)
+    target_tensor = torch.cat(all_targets)
+    logger.log(f"{log_name}_loss", running_loss/len(dataloader)) # log average epoch loss
+
+    for idx, metric in enumerate(metrics):
+        metric = metric.to(device)
+        result = metric(outputs_tensor, target_tensor)
+        logger.log(f"{log_name}_{config.metrics_names[idx]}", result.item())
+        print(f"{config.metrics_names[idx]}: {result.item()}")
 
     if device == 'cuda':
         torch.cuda.synchronize()
-    timer.end(timer_name)
+    timer.end(log_name)

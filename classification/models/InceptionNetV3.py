@@ -17,15 +17,15 @@ class InceptionNetV3():
 
     def train(self, X):
         return self.model(X)
-    
+
     def calculate_loss(self, loss_fn, model_outputs, y):
-        if self.aux_logits:
+        if len(model_outputs) == 2:
             outputs, aux_outputs = model_outputs
             loss1 = loss_fn(outputs, y)
             loss2 = loss_fn(aux_outputs, y)
-            return loss1 + 0.4 * loss2
-        else:
-            return loss_fn(model_outputs[0], y)
+            return loss1 + 0.4 * loss2 # commonly used weighting
+
+        return loss_fn(model_outputs, y)
     
     def parameters(self):
         return self.model.parameters()
