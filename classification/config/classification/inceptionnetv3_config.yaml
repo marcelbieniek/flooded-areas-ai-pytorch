@@ -20,5 +20,5 @@ metrics:
   cohen_kappa:
     task: binary
 train:
-  epochs: 10
+  epochs: 1
   batch_size: 64

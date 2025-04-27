@@ -31,7 +31,7 @@ class FloodNetDataset(Dataset):
 
         if self.transform:
             image = self.transform(image)
-        
+
         return image, label
     
     def get_class_dict(self):

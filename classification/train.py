@@ -26,7 +26,7 @@ def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logge
 
         optimizer.zero_grad()
 
-        outputs = model.train(X)
+        outputs = model.forward(X)
         loss = model.calculate_loss(loss_fn, outputs, y)
 
         # backpropagation

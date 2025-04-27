@@ -1,10 +1,12 @@
 import torch
 import os
 from utils.config_parser import Config
-from dataloader.dataloader import get_dataloaders
+from dataloader.dataloader import *
 from train import train_model
 from evaluate import test_model
 from utils.logger import TimeLogger, DataLogger
+from utils.utils import plot_predictions
+import matplotlib.pyplot as plt
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "5"
 
@@ -32,15 +34,15 @@ print(config.metrics_names)
 
 timer = TimeLogger()
 logger = DataLogger()
-train_data, test_data = get_dataloaders(config.config["train"]["batch_size"])
-print(train_data, test_data)
+train_data, val_data = get_dataloaders(config.config["train"]["batch_size"])
+test_data = get_test_dataloader(config.config["train"]["batch_size"])
 
 epochs = config.config["train"]["epochs"]
 
 for epoch in range(epochs):
     print(f"-------------- Epoch {epoch+1} --------------")
-    train_model(test_data, config, timer, logger, device)
-    test_model(test_data, config, timer, logger, device)
+    train_model(train_data, config, timer, logger, device)
+    test_model(val_data, config, timer, logger, device)
     print("----- Epoch times:")
     timer.print_log(f"{config.model.name}_train")
     timer.print_log(f"{config.model.name}_val")
@@ -50,3 +52,18 @@ for epoch in range(epochs):
     print("----- Logged data:")
     print(logger.logs)
 print("Done!")
+
+config.model.save_model("inception.pth")
+
+# Loss
+plt.figure(figsize=(10, 5))
+plt.plot(logger.logs["InceptionNetV3_train_loss"], label='Train Loss')
+plt.plot(logger.logs["InceptionNetV3_val_loss"], label='Validation Loss')
+plt.title('Loss Over Epochs')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.savefig("inception_loss")
+
+# config.model.load_model("inception.pth")
+plot_predictions(config.model, test_data, {0:"non-flooded", 1:"flooded"})

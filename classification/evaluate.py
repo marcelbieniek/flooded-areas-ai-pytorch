@@ -21,8 +21,11 @@ def test_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger
     with torch.inference_mode():
         for X, y in dataloader:
             X, y = X.to(device), y.to(device).float().unsqueeze(1)
+            # print(f"X: {X.size()}")
+            # print(f"y: {y.size()}")
 
-            outputs = model.train(X)
+            outputs = model.forward(X)
+            # print(f"outputs: {outputs.size()}")
             loss = model.calculate_loss(loss_fn, outputs, y)
 
             running_loss += loss.item()
