@@ -1,7 +1,8 @@
 import torch
+from torchvision import transforms
 import os
 from utils.config_parser import Config
-from dataloader.dataloader import *
+from dataloaders.dataloader import get_dataloader
 from train import train_model
 from evaluate import test_model
 from utils.logger import TimeLogger, DataLogger
@@ -31,13 +32,37 @@ print(config.loss)
 print(config.optimizer)
 print(config.metrics)
 print(config.metrics_names)
+epochs = config.epochs
+batch_size = config.batch_size
+
+transform = transforms.Compose([
+    transforms.Resize(299),
+    transforms.CenterCrop(299),
+    transforms.ToTensor(),
+    # transforms.Normalize(mean=[0.485, 0.456, 0.406],  # Normalize with ImageNet mean and std
+    #                      std=[0.229, 0.224, 0.225])
+])
+
+train_data = get_dataloader(img_dir="../data/FloodNet_dataset/train/image",
+                            labels_file="../data/flood_train_rel_paths.csv",
+                            transform=transform,
+                            batch_size=batch_size,
+                            shuffle=True)
+
+val_data = get_dataloader(img_dir="../data/FloodNet_dataset/val/image",
+                          labels_file="../data/flood_val_rel_paths.csv",
+                          transform=transform,
+                          batch_size=batch_size,
+                          shuffle=False)
+
+test_data = get_dataloader(img_dir="../data/FloodNet_dataset/test/image",
+                           labels_file="../data/flood_test_rel_paths.csv",
+                           transform=transform,
+                           batch_size=batch_size,
+                           shuffle=False)
 
 timer = TimeLogger()
 logger = DataLogger()
-train_data, val_data = get_dataloaders(config.config["train"]["batch_size"])
-test_data = get_test_dataloader(config.config["train"]["batch_size"])
-
-epochs = config.config["train"]["epochs"]
 
 for epoch in range(epochs):
     print(f"-------------- Epoch {epoch+1} --------------")

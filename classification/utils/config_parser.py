@@ -12,6 +12,8 @@ class Config():
         self.optimizer = self.load_optimizer()
         self.metrics = self.load_metrics()
         self.metrics_names = self.get_metrics_names()
+        self.epochs = self.get_epochs()
+        self.batch_size = self.get_batch_size()
 
     def load_config(self, path):
         with open(path) as f:
@@ -31,3 +33,9 @@ class Config():
     
     def get_metrics_names(self):
         return [name for name in self.config['metrics']]
+
+    def get_epochs(self):
+        return self.config["train"]["epochs"]
+    
+    def get_batch_size(self):
+        return self.config["train"]["batch_size"]
