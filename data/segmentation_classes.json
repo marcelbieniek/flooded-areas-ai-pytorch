@@ -1,0 +1,12 @@
+{
+    "0": "Background",
+    "1": "Building-flooded",
+    "2": "Building-non-flooded",
+    "3": "Road-flooded",
+    "4": "Road-non-flooded",
+    "5": "Water",
+    "6": "Tree",
+    "7": "Vehicle",
+    "8": "Pool",
+    "9": "Grass"
+}

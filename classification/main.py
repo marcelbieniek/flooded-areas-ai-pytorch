@@ -1,13 +1,16 @@
+import os
+import json
+
 import torch
 from torchvision import transforms
-import os
+import matplotlib.pyplot as plt
+
 from utils.config_parser import Config
 from dataloaders.dataloader import get_dataloader
 from train import train_model
 from evaluate import test_model
 from utils.logger import TimeLogger, DataLogger
 from utils.utils import plot_predictions
-import matplotlib.pyplot as plt
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "5"
 
@@ -80,7 +83,7 @@ print("Done!")
 
 config.model.save_model("inception.pth")
 
-# Loss
+# plot loss
 plt.figure(figsize=(10, 5))
 plt.plot(logger.logs["InceptionNetV3_train_loss"], label='Train Loss')
 plt.plot(logger.logs["InceptionNetV3_val_loss"], label='Validation Loss')
@@ -90,5 +93,10 @@ plt.ylabel('Loss')
 plt.legend()
 plt.savefig("inception_loss")
 
+# inferencing on trained model
 # config.model.load_model("inception.pth")
-plot_predictions(config.model, test_data, {0:"non-flooded", 1:"flooded"})
+# with open("../data/classification_classes.json", "r") as f:
+#     classes = json.load(f)
+#     classes = {int(k): v for k, v in classes.items()}
+#     print(classes)
+# plot_predictions(config.model, test_data, classes)
