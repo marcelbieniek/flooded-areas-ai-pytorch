@@ -33,8 +33,8 @@ class PSPNet():
     def load_model(self, path):
         self.model.load_state_dict(torch.load(path, weights_only=True))
 
-def pspnet(num_classes, pretrained, aux_logits):
-    return PSPNet(num_classes, pretrained, aux_logits)
+def pspnet(num_classes, pretrained):
+    return PSPNet(num_classes, pretrained)
 
 
 class PSPNetImpl(nn.Module):

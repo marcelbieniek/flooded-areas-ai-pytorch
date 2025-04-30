@@ -45,30 +45,32 @@ train_data = DataLoader(dataset, batch_size=64, shuffle=True)
 
 model = PSPNet()
 model.move_to_device(device)
-model.train_mode()
+# model.train_mode()
 
-import torch.optim as optim
-import torch.nn as nn
-optimizer = optim.Adam(model.parameters(), lr=1e-4)
-criterion = nn.CrossEntropyLoss()
+# import torch.optim as optim
+# import torch.nn as nn
+# optimizer = optim.Adam(model.parameters(), lr=1e-4)
+# criterion = nn.CrossEntropyLoss()
 
-num_epochs = 1
-for epoch in range(num_epochs):
-    size = len(train_data.dataset)
-    current = 0
-    running_loss = 0.0
-    print(f"-------------- Epoch {epoch+1} --------------")
-    for batch, (images, masks) in enumerate(train_data):
-        images, masks = images.to(device), masks.to(device)
-        optimizer.zero_grad()
-        outputs = model.forward(images)
-        loss = criterion(outputs, masks.squeeze(1))  # squeeze if mask is [B,1,H,W]
-        loss.backward()
-        optimizer.step()
+# num_epochs = 1
+# for epoch in range(num_epochs):
+#     size = len(train_data.dataset)
+#     current = 0
+#     running_loss = 0.0
+#     print(f"-------------- Epoch {epoch+1} --------------")
+#     for batch, (images, masks) in enumerate(train_data):
+#         images, masks = images.to(device), masks.to(device)
+#         optimizer.zero_grad()
+#         outputs = model.forward(images)
+#         loss = criterion(outputs, masks.squeeze(1))  # squeeze if mask is [B,1,H,W]
+#         loss.backward()
+#         optimizer.step()
 
-        loss, current = loss.item(), current + len(images)
-        running_loss += loss
-        print(f"batch: {batch}, loss: {loss:>7f} [{current:>5d}/{size:>5d}]")
+#         loss, current = loss.item(), current + len(images)
+#         running_loss += loss
+#         print(f"batch: {batch}, loss: {loss:>7f} [{current:>5d}/{size:>5d}]")
+
+# model.save_model("model.pth")
 
 from torchvision.transforms import functional as TF
 import matplotlib.pyplot as plt
@@ -82,7 +84,10 @@ def infer(model, image_path, device):
 
     with torch.no_grad():
         output = model.forward(input_tensor)
+        print(output.shape)
+        print(output)
         pred = torch.argmax(output.squeeze(), dim=0).cpu().numpy()
+        print(pred)
     
     return image, pred
 
@@ -99,6 +104,8 @@ def visualize_segmentation(original, mask):
     plt.axis('off')
     plt.savefig("seg")
 
-image_path = "../data/FloodNet_dataset/test/image/6336.jpg"
+model.load_model("model.pth")
+
+image_path = "../data/FloodNet_dataset/test/image/7376.jpg"
 image, pred_mask = infer(model, image_path, device)
 visualize_segmentation(image, pred_mask)
