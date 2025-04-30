@@ -3,6 +3,7 @@ from torch import nn
 
 class ResNet50():
     def __init__(self, num_classes: int = 1, pretrained: bool = True):
+        self.name = "ResNet50"
         self.num_classes = num_classes
         self.model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=pretrained)
 

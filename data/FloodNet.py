@@ -64,10 +64,8 @@ class FloodNetSegmentation(Dataset):
 
     def __getitem__(self, index):
         image_name = self.images[index]
-        print(image_name)
         image = Image.open(os.path.join(self.image_dir, image_name)).convert("RGB")
         label_name = image_name.replace(".jpg", "_lab.png")
-        print(label_name)
         mask = Image.open(os.path.join(self.mask_dir, label_name)).convert("L")
         
         if self.transform:

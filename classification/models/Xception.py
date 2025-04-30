@@ -4,6 +4,7 @@ from torch import nn
 
 class Xception():
     def __init__(self, num_classes: int = 1, pretrained: bool = True):
+        self.name = "Xception"
         self.num_classes = num_classes
         self.model = timm.create_model('xception', pretrained=pretrained)
 
