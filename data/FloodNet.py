@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from torch.utils.data import Dataset
+import torch
 from PIL import Image
 
 class FloodNetClassification(Dataset):
@@ -42,17 +43,19 @@ class FloodNetClassification(Dataset):
 
 
 class FloodNetSegmentation(Dataset):
-    def __init__(self, img_dir, mask_dir, classes: dict = None, transform=None):
+    def __init__(self, img_dir, mask_dir, classes: dict = None, image_transform=None, mask_transform=None):
         """
         Args:
             img_dir (string): Path to root directory with all the images.
             mask_dir (string): Path to root directory with all the image masks.
             classes (dict, optional): Optional dictionary describing classes in the dataset, in format {label_value (int): "class_name"}
-            transform (callable, optional): Optional transform to be applied on a sample.
+            image_transform (callable, optional): Optional transform to be applied on a sample.
+            mask_transform (callable, optional): Optional transform to be applied on a sample mask.
         """
         self.image_dir = img_dir
         self.mask_dir = mask_dir
-        self.transform = transform
+        self.image_transform = image_transform
+        self.mask_transform = mask_transform
         self.images = sorted(os.listdir(img_dir))
         if classes:
             self.classes = dict(sorted(classes.items(), key=lambda item: item[0]))
@@ -66,13 +69,18 @@ class FloodNetSegmentation(Dataset):
         image_name = self.images[index]
         image = Image.open(os.path.join(self.image_dir, image_name)).convert("RGB")
         label_name = image_name.replace(".jpg", "_lab.png")
-        mask = Image.open(os.path.join(self.mask_dir, label_name)).convert("L")
-        
-        if self.transform:
-            image = self.transform(image)
-            mask = self.transform(mask)
+        mask = Image.open(os.path.join(self.mask_dir, label_name))
 
-        return image, mask.long()
+        # if index == 674 or index == 675:
+        #     print(label_name)
+        
+        if self.image_transform:
+            image = self.image_transform(image)
+
+        if self.mask_transform:
+            mask = self.mask_transform(mask)
+
+        return image, mask
 
     def get_class_dict(self):
         return self.classes

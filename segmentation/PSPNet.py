@@ -2,12 +2,15 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 from torchvision.models import resnet101
+from torchvision.models.segmentation.deeplabv3 import DeepLabHead
 
 class PSPNet():
     def __init__(self, num_classes: int = 10, pretrained: bool = True):
         self.name = "PSPNet"
         self.num_classes = num_classes
         self.model = PSPNetImpl(num_classes, pretrained)
+        # self.model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet101', pretrained=pretrained)
+        # self.model.classifier = DeepLabHead(2048, num_classes)
 
     def forward(self, X):
         return self.model(X)
