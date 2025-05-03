@@ -1,4 +1,4 @@
-from torchmetrics import Accuracy, Precision, Recall, MatthewsCorrCoef, CohenKappa
+from torchmetrics import Accuracy, Precision, Recall, MatthewsCorrCoef, CohenKappa, JaccardIndex
 
 def accuracy(**kwargs):
     return Accuracy(**kwargs)
@@ -16,3 +16,7 @@ def mcc(**kwargs):
 def cohen_kappa(**kwargs):
     """Cohen's kappa score"""
     return CohenKappa(**kwargs)
+
+def iou(**kwargs):
+    """Intersection over Union (Jaccard index)"""
+    return JaccardIndex(**kwargs)

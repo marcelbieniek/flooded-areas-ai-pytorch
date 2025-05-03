@@ -5,6 +5,9 @@ import torch
 from torchvision import transforms
 from torch.utils.data import DataLoader
 from PSPNet import PSPNet
+from DeepLabV3 import DeepLabV3
+from ENet import ENet
+from ENetV2 import ENetV2
 
 import torch.optim as optim
 import torch.nn as nn
@@ -38,36 +41,33 @@ print(f"Using {device} device")
 
 transform = transforms.Compose([
     transforms.Resize((299, 299)),
-    # transforms.CenterCrop(299),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406],  # Normalize with ImageNet mean and std
                          std=[0.229, 0.224, 0.225])
 ])
 
 def mask_transform(mask):
-    mask = mask.resize((299, 299), resample=Image.NEAREST)
+    mask = mask.resize((299, 299), resample=Image.BILINEAR)
     # mask = torch.from_numpy(np.array(mask)).long()  # shape [H, W], values 0-9
     mask = TF.pil_to_tensor(mask).long()
     return mask
 
-dataset = FloodNetSegmentation(img_dir="../data/FloodNet_dataset/train/image",
+train_dataset = FloodNetSegmentation(img_dir="../data/FloodNet_dataset/train/image",
                                mask_dir="../data/FloodNet_dataset/train/label",
                                image_transform=transform,
                                mask_transform=mask_transform
                                )
 
-train_data = DataLoader(dataset, batch_size=32, shuffle=True)
+train_data = DataLoader(train_dataset, batch_size=32, shuffle=True)
 
-model = PSPNet()
+model = ENetV2()
 model.move_to_device(device)
 model.train_mode()
 
-# import torch.optim as optim
-# import torch.nn as nn
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
 criterion = nn.CrossEntropyLoss()
 
-num_epochs = 5
+num_epochs = 3
 for epoch in range(num_epochs):
     size = len(train_data.dataset)
     current = 0
@@ -77,11 +77,18 @@ for epoch in range(num_epochs):
         images, masks = images.to(device), masks.to(device).squeeze().long()
         optimizer.zero_grad()
         outputs = model.forward(images)
+        # print(outputs.shape)
+        # print(masks.shape)
         # loss = criterion(outputs, masks.squeeze(1))  # squeeze if mask is [B,1,H,W]
         # if batch >= 336:
         #     print(masks)
         #     torch.save(masks, f"masks_{batch}.pt")
-        loss = criterion(outputs, masks)
+        # loss = criterion(outputs, masks)
+
+        # _, _, h, w = outputs.shape
+        # outputs = outputs[:, :, :masks.shape[1], :masks.shape[2]]
+
+        loss = model.calculate_loss(criterion, outputs, masks)
         loss.backward()
         optimizer.step()
 
@@ -91,14 +98,14 @@ for epoch in range(num_epochs):
 
 model.save_model("model.pth")
 
-# from torchvision.transforms import functional as TF
-# import matplotlib.pyplot as plt
-# from PIL import Image
-# import numpy as np
+
+
+
 
 def infer(model, image_path, device):
     model.eval_mode()
     image = Image.open(image_path).convert("RGB")
+    image = image.resize((299, 299), resample=Image.BILINEAR)
     input_tensor = transform(image).unsqueeze(0).to(device)
 
     with torch.no_grad():
@@ -160,26 +167,13 @@ COLORMAP = [
 
 model.load_model("model.pth")
 
-image_path = "../data/FloodNet_dataset/test/image/6336.jpg"
-ground_truth_path = "../data/FloodNet_dataset/test/label/6336_lab.png"
+image_path = "../data/FloodNet_dataset/test/image/6445.jpg"
+ground_truth_path = "../data/FloodNet_dataset/test/label/6445_lab.png"
 
 image, pred_mask = infer(model, image_path, device)
 
 ground_truth_mask = Image.open(ground_truth_path).convert("L")
-# print(np.array(ground_truth_mask))
 ground_truth_mask = mask_transform(ground_truth_mask).squeeze().numpy()
-# print(ground_truth_mask.shape)
-# print(ground_truth_mask)
-# plt.imshow(ground_truth_mask, cmap='tab10')  # Good for up to 10 classes
-# plt.colorbar()
-# plt.title("Ground Truth Mask with Colormap")
-# plt.axis('on')
-# plt.savefig("mask")
-
-# ground_truth = transform(ground_truth_mask).squeeze().numpy()
-# mapped_mask = (ground_truth * (255 // 9)).astype(np.uint8)
-# print(mapped_mask)
-# np.savetxt("mask.txt", ground_truth_mask)
 ground_truth = decode_segmap(ground_truth_mask, COLORMAP)
 
 segmentation = decode_segmap(pred_mask, COLORMAP)

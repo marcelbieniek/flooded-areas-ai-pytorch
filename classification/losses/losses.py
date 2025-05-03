@@ -23,3 +23,6 @@ def sorensen_dice(preds, targets, smooth=1e-6):
     dice = (2. * intersection + smooth) / (union + smooth)
 
     return 1 - dice
+
+def cross_entropy():
+    return nn.CrossEntropyLoss()

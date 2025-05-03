@@ -1,0 +1,26 @@
+model:
+  name: pspnet
+  params:
+    num_classes: 10
+    pretrained: true
+loss: cross_entropy
+optimizer:
+  name: adam
+  lr: 0.0001
+metrics:
+  accuracy:
+    task: multiclass
+  precision:
+    task: multiclass
+  recall:
+    task: multiclass
+  mcc:
+    task: multiclass
+  cohen_kappa:
+    task: multiclass
+  iou:
+    task: multiclass
+    num_classes: 10
+train:
+  epochs: 1
+  batch_size: 32
