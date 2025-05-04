@@ -1,9 +1,9 @@
 import torch
 from torch.utils.data import DataLoader
-from utils.config_parser import Config
-from utils.logger import TimeLogger, DataLogger
+from classification.utils.config_parser import Config
+from classification.utils.logger import TimeLogger, DataLogger
 
-def evaluate_classification_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str):
+def evaluate_segmentation_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str):
     print("Validating...")
     model = config.model
     loss_fn = config.loss
@@ -20,7 +20,7 @@ def evaluate_classification_model(dataloader: DataLoader, config: Config, timer:
     model.eval_mode()
     with torch.inference_mode():
         for X, y in dataloader:
-            X, y = X.to(device), y.to(device).float().unsqueeze(1)
+            X, y = X.to(device), y.to(device).unsqueeze().long()
             # print(f"X: {X.size()}")
             # print(f"y: {y.size()}")
 

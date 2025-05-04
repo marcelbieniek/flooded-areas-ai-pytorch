@@ -1,9 +1,9 @@
 import torch
 from torch.utils.data import DataLoader
-from utils.config_parser import Config
-from utils.logger import TimeLogger, DataLogger
+from classification.utils.config_parser import Config
+from classification.utils.logger import TimeLogger, DataLogger
 
-def train_classification_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str):
+def train_segmentation_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str):
     print("Training...")
     model = config.model
     loss_fn = config.loss
@@ -22,7 +22,7 @@ def train_classification_model(dataloader: DataLoader, config: Config, timer: Ti
     model.move_to_device(device)
     model.train_mode()
     for batch, (X, y) in enumerate(dataloader):
-        X, y = X.to(device), y.to(device).float().unsqueeze(1)
+        X, y = X.to(device), y.to(device).float().squeeze().long()
 
         optimizer.zero_grad()
 

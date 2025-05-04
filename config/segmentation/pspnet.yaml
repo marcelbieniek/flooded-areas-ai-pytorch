@@ -21,6 +21,7 @@ metrics:
   iou:
     task: multiclass
     num_classes: 10
+    average: none
 train:
   epochs: 1
   batch_size: 32
