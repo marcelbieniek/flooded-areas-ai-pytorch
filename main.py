@@ -3,7 +3,7 @@ import sys
 
 def main():
     env = Environment()
-    # env.print_root_path()
+    env.init()
 
 if __name__ == "__main__":
     # print(sys.path[0])
