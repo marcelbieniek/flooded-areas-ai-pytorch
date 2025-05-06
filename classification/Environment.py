@@ -32,6 +32,10 @@ class Environment():
         self.__validate_found_configs()
 
     def run(self):
+        # for each config:
+        #   create Runner <- Runner class
+        #   run model <- Runner class
+        #   save results <- Runner class, path to save created and provided by Environment
         pass
 
     def __find_configs(self):

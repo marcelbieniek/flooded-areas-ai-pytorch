@@ -5,7 +5,7 @@ import torch
 from PIL import Image
 
 class FloodNetClassification(Dataset):
-    def __init__(self, img_dir, annotations_file, classes: dict = None, transform=None):
+    def __init__(self, img_dir: str, annotations_file: str, classes: dict = None, transform=None):
         """
         Args:
             img_dir (string): Path to root directory with all the images.
@@ -43,7 +43,7 @@ class FloodNetClassification(Dataset):
 
 
 class FloodNetSegmentation(Dataset):
-    def __init__(self, img_dir, mask_dir, classes: dict = None, image_transform=None, mask_transform=None):
+    def __init__(self, img_dir: str, mask_dir: str, classes: dict = None, image_transform=None, mask_transform=None):
         """
         Args:
             img_dir (string): Path to root directory with all the images.

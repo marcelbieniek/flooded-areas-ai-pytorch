@@ -46,20 +46,20 @@ transform = transforms.Compose([
     #                      std=[0.229, 0.224, 0.225])
 ])
 
-train_data = get_dataloader(img_dir="../data/FloodNet_dataset/train/image",
-                            labels_file="../data/flood_train_rel_paths.csv",
+train_data = get_dataloader(inputs_path="../data/FloodNet_dataset/train/image",
+                            targets_path="../data/flood_train_rel_paths.csv",
                             transform=transform,
                             batch_size=batch_size,
                             shuffle=True)
 
-val_data = get_dataloader(img_dir="../data/FloodNet_dataset/val/image",
-                          labels_file="../data/flood_val_rel_paths.csv",
+val_data = get_dataloader(inputs_path="../data/FloodNet_dataset/val/image",
+                          targets_path="../data/flood_val_rel_paths.csv",
                           transform=transform,
                           batch_size=batch_size,
                           shuffle=False)
 
-test_data = get_dataloader(img_dir="../data/FloodNet_dataset/test/image",
-                           labels_file="../data/flood_test_rel_paths.csv",
+test_data = get_dataloader(inputs_path="../data/FloodNet_dataset/test/image",
+                           targets_path="../data/flood_test_rel_paths.csv",
                            transform=transform,
                            batch_size=batch_size,
                            shuffle=False)
