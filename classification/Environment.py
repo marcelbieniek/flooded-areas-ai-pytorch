@@ -3,6 +3,8 @@ import os
 import torch
 import sys
 
+from Executor import Executor
+
 ROOT_CONFIG_DIR = "config"
 
 class Environment():
@@ -25,18 +27,21 @@ class Environment():
 
         self.device = None
         self.configs = []
+        self.executor = None
 
     def init(self):
         self.__set_cuda_environment()
         self.__find_configs()
         self.__validate_found_configs()
+        self.executor = Executor()
 
     def run(self):
+        # runner created before, in init
         # for each config:
-        #   create Runner <- Runner class
-        #   run model <- Runner class
-        #   save results <- Runner class, path to save created and provided by Environment
-        pass
+        #   run config <- Runner class
+        # save results <- Runner class, path to save created and provided by Environment
+        for config in self.configs:
+            self.executor.execute_config(config)
 
     def __find_configs(self):
         arg = self.args.run
