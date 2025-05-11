@@ -6,6 +6,7 @@ import sys
 from Executor import Executor
 
 ROOT_CONFIG_DIR = "config"
+RESULT_DIR = "result"
 
 class Environment():
     def __init__(self):
@@ -41,7 +42,12 @@ class Environment():
         #   run config <- Runner class
         # save results <- Runner class, path to save created and provided by Environment
         for config in self.configs:
-            self.executor.execute_config(config)
+            self.executor.execute_config(config, self.device, self.args.verbose)
+        
+        self.executor.save_logs()
+    
+    def __save_results(self):
+        pass
 
     def __find_configs(self):
         arg = self.args.run

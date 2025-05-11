@@ -1,4 +1,5 @@
 import time
+import csv
 
 class TimeLogger():
     def __init__(self):
@@ -31,6 +32,15 @@ class TimeLogger():
         if name not in self.logs:
             raise KeyError(f"[TimeLogger] key '{name}' not found!")
         print(f"{sum(self.logs[name])/len(self.logs[name]):.4f} s")
+    
+    def save_log_to_csv(self, file_path):
+        fieldnames = self.logs.keys()
+        rows = zip(*self.logs.values())
+
+        with open(file_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(fieldnames)
+            writer.writerows(rows)
 
 
 class DataLogger():
@@ -41,3 +51,22 @@ class DataLogger():
         if name not in self.logs:
             self.logs[name] = []
         self.logs[name].append(item)
+
+    def print_log(self, name: str):
+        if name not in self.logs:
+            raise KeyError(f"[DataLogger] key '{name}' not found!")
+        print(self.logs[name])
+
+    def print_log_avg(self, name: str):
+        if name not in self.logs:
+            raise KeyError(f"[DataLogger] key '{name}' not found!")
+        print(f"{sum(self.logs[name])/len(self.logs[name]):.4f}")
+
+    def save_log_to_csv(self, file_path):
+        fieldnames = self.logs.keys()
+        rows = zip(*self.logs.values())
+
+        with open(file_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(fieldnames)
+            writer.writerows(rows)

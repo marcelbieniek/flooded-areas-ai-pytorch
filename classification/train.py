@@ -17,8 +17,9 @@ def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logge
     all_outputs = []
     all_targets = []
 
-    log_name = f"{model.name}_train"
-    timer.start(log_name)
+    log_name = f"{config.config_name}_train"
+    time_log_name = f"{log_name}_time"
+    timer.start(time_log_name)
 
     model.move_to_device(device)
     model.train_mode()
@@ -59,7 +60,7 @@ def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logge
 
     if device == 'cuda':
         torch.cuda.synchronize()
-    timer.end(log_name)
+    timer.end(time_log_name)
 
 def prepare_data(X, y, device, task):
     X = X.to(device)

@@ -13,8 +13,9 @@ def evaluate_model(dataloader: DataLoader, config: Config, timer: TimeLogger, lo
     all_outputs = []
     all_targets = []
 
-    log_name = f"{model.name}_val"
-    timer.start(log_name)
+    log_name = f"{config.config_name}_val"
+    time_log_name = f"{log_name}_time"
+    timer.start(time_log_name)
 
     model.move_to_device(device)
     model.eval_mode()
@@ -45,7 +46,7 @@ def evaluate_model(dataloader: DataLoader, config: Config, timer: TimeLogger, lo
 
     if device == 'cuda':
         torch.cuda.synchronize()
-    timer.end(log_name)
+    timer.end(time_log_name)
 
     def prepare_data(X, y, device, task):
         X = X.to(device)
