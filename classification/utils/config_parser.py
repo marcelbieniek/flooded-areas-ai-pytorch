@@ -1,8 +1,5 @@
 import yaml
-import models
-import losses
-import optimizers
-import metrics
+from classification import models, losses, optimizers, metrics
 
 TRAIN_SEGMENT = "train"
 VAL_SEGMENT = "val"

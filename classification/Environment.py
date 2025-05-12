@@ -1,9 +1,10 @@
 import argparse
 import os
 import torch
-import sys
+import pathlib
+from datetime import datetime
 
-from Executor import Executor
+from classification.Executor import Executor
 
 ROOT_CONFIG_DIR = "config"
 RESULT_DIR = "result"
@@ -24,6 +25,7 @@ class Environment():
                                  - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'config' directory).
                                  - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
                                  """)
+        self.parser.add_argument("-l", "--logs", action="store_true", default=False, help="Collect logs and models to files.")
         self.args = self.parser.parse_args()
 
         self.device = None
@@ -34,7 +36,7 @@ class Environment():
         self.__set_cuda_environment()
         self.__find_configs()
         self.__validate_found_configs()
-        self.executor = Executor()
+        self.executor = Executor(self.device)
 
     def run(self):
         # runner created before, in init
@@ -42,12 +44,24 @@ class Environment():
         #   run config <- Runner class
         # save results <- Runner class, path to save created and provided by Environment
         for config in self.configs:
+            if self.args.verbose:
+                print(f"Starting execution of config: {config}")
             self.executor.execute_config(config, self.device, self.args.verbose)
+            if self.args.verbose:
+                print(f"Finished executing config on: {datetime.now()}")
         
-        self.executor.save_logs()
-    
+        if self.args.logs:
+            self.__save_results()
+
     def __save_results(self):
-        pass
+        path = pathlib.Path(RESULT_DIR)
+        path = path / datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
+        path.mkdir(parents=True, exist_ok=True)
+        self.executor.save_logs(path / "results.csv")
+
+        with open(path / "configs.txt", "w") as f:
+            for config in self.configs:
+                f.write(f"{config}\n")
 
     def __find_configs(self):
         arg = self.args.run

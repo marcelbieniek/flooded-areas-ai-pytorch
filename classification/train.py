@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
-from utils.config_parser import Config
-from utils.logger import TimeLogger, DataLogger
+from classification.utils.config_parser import Config
+from classification.utils.logger import TimeLogger, DataLogger
 
 def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str, verbose: bool):
     if verbose:

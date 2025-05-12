@@ -1,9 +1,9 @@
-from utils.config_parser import Config
-from utils.logger import TimeLogger, DataLogger
-from dataloaders.dataloader import get_dataloader
-from utils.transforms import classification_image_tf, segmentation_image_tf, segmentation_mask_tf
-from train import train_model
-from evaluate import evaluate_model
+from classification.utils.config_parser import Config
+from classification.utils.logger import TimeLogger, DataLogger
+from classification.dataloaders.dataloader import get_dataloader
+from classification.utils.transforms import classification_image_tf, segmentation_image_tf, segmentation_mask_tf
+from classification.train import train_model
+from classification.evaluate import evaluate_model
 from collections import defaultdict
 import csv
 
@@ -15,6 +15,8 @@ class Executor():
 
     def execute_config(self, config_path: str, device: str, verbose: bool):
         config = Config(config_path)
+        if verbose:
+            print(f"----- Executing config: {config.config_name} -----")
 
         train_data, val_data, test_data = self.__get_data(config=config)
 
