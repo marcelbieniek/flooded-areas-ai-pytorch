@@ -1,0 +1,32 @@
+task: classification
+model:
+  name: resnet50
+  params:
+    num_classes: 1
+    pretrained: true
+loss: bce_with_logits
+optimizer:
+  name: adam
+  lr: 0.001
+metrics:
+  accuracy:
+    task: binary
+  precision:
+    task: binary
+  recall:
+    task: binary
+  mcc:
+    task: binary
+  cohen_kappa:
+    task: binary
+batch_size: 64
+train:
+  epochs: 30
+  inputs: dataset/FloodNet_dataset/train/image
+  targets: dataset/flood_train_rel_paths.csv
+val:
+  inputs: dataset/FloodNet_dataset/val/image
+  targets: dataset/flood_val_rel_paths.csv
+test:
+  inputs: dataset/FloodNet_dataset/test/image
+  targets: dataset/flood_test_rel_paths.csv
