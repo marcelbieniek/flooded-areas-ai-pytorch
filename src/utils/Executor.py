@@ -53,6 +53,8 @@ class Executor():
         path.mkdir(parents=True, exist_ok=True)
         config.model.save_model(os.path.join(SAVED_MODELS_DIR, f"{config.config_name}.pth"))
 
+        del config.model
+
         if verbose:
             print("Done!")
 
