@@ -10,10 +10,10 @@ class DeepLabV3():
         self.model.classifier = DeepLabHead(2048, num_classes)
 
     def forward(self, X):
-        return self.model(X)
+        return self.model(X)["out"]
 
     def calculate_loss(self, loss_fn, model_outputs, y):
-        return loss_fn(model_outputs["out"], y)
+        return loss_fn(model_outputs, y)
     
     def parameters(self):
         return self.model.parameters()
