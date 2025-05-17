@@ -28,7 +28,7 @@ metrics:
     task: multiclass
     num_classes: 10
     average: none
-batch_size: 64
+batch_size: 32
 train:
   epochs: 30
   inputs: dataset/FloodNet_dataset/train/image

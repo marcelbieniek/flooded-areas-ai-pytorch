@@ -5,23 +5,27 @@ class DeepLabV3():
     def __init__(self, num_classes: int = 10, pretrained: bool = True):
         self.name = "DeepLabV3"
         self.num_classes = num_classes
+        self.training = False
 
         self.model = torch.hub.load('pytorch/vision:v0.10.0', 'deeplabv3_resnet101', pretrained=pretrained)
         self.model.classifier = DeepLabHead(2048, num_classes)
 
     def forward(self, X):
-        return self.model(X)["out"]
+        output = self.model(X)
+        return output["out"]
 
     def calculate_loss(self, loss_fn, model_outputs, y):
         return loss_fn(model_outputs, y)
-    
+
     def parameters(self):
         return self.model.parameters()
     
     def train_mode(self):
+        self.training = True
         self.model.train()
 
     def eval_mode(self):
+        self.training = False
         self.model.eval()
 
     def move_to_device(self, device):

@@ -3,11 +3,12 @@ import os
 import torch
 import pathlib
 from datetime import datetime
+import time
 
 from utils.Executor import Executor
 
-ROOT_CONFIG_DIR = "config"
-RESULT_DIR = "result"
+ROOT_CONFIG_DIR = "configs"
+RESULT_DIR = "results"
 
 class Environment():
     def __init__(self):
@@ -30,34 +31,47 @@ class Environment():
 
         self.device = None
         self.configs = []
-        self.executor = None
 
     def init(self):
         self.__set_cuda_environment()
         self.__find_configs()
         self.__validate_found_configs()
-        self.executor = Executor(self.device)
+        if self.args.logs:
+            result_path = pathlib.Path(RESULT_DIR)
+            result_path.mkdir(parents=True, exist_ok=True)
 
     def run(self):
+        start_time = time.time()
+        run_dir = pathlib.Path(RESULT_DIR) / datetime.now().strftime("%Y_%m_%d-%H_%M")
+        logs_dir = run_dir / "logs"
+        models_dir = run_dir / "models"
+
+        if self.args.logs:
+            run_dir.mkdir(parents=True)
+            logs_dir.mkdir(parents=True)
+            models_dir.mkdir(parents=True)
+
+            if self.args.verbose:
+                print(f"----- Results will be saved to: {run_dir} -----")
+
         for config in self.configs:
             if self.args.verbose:
                 print(f"----- Starting execution of config: {config} -----")
-            self.executor.execute_config(config, self.device, self.args.verbose)
+
+            executor = Executor(config, self.device, self.args.verbose)
+            executor.execute_config()
+
+            if self.args.logs:
+                executor.save_logs(logs_dir)
+                executor.save_model(models_dir)
+                with open(run_dir / "configs.txt", "a") as f:
+                    f.write(f"{config}\n")
+
             if self.args.verbose:
                 print(f"----- Finished executing config on: {datetime.now()} -----")
-        
-        if self.args.logs:
-            self.__save_results()
 
-    def __save_results(self):
-        path = pathlib.Path(RESULT_DIR)
-        path = path / datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
-        path.mkdir(parents=True, exist_ok=True)
-        self.executor.save_logs(path / "results.csv")
-
-        with open(path / "configs.txt", "w") as f:
-            for config in self.configs:
-                f.write(f"{config}\n")
+        if self.args.verbose:
+            print(f"----- Run took {time.time() - start_time}s")
 
     def __find_configs(self):
         arg = self.args.run

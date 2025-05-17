@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
-from utils.config_parser import Config
+from utils.Config import Config
 from utils.logging import TimeLogger, DataLogger
 
 def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str, verbose: bool):
