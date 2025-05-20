@@ -24,7 +24,8 @@ def get_floodnet_dataloader(inputs_path: str, targets_path: str, transforms: lis
         data = FloodNetSegmentation(img_dir=inputs_path,
                                     mask_dir=targets_path,
                                     image_transform=transforms[0],
-                                    mask_transform=transforms[1]
+                                    mask_transform=transforms[1],
+                                    joint_transform=transforms[2]
                                     )
     else:
         raise TypeError(f"Argument 'targets_path' expected a path to a CSV file or a directory containing segmentation masks, got '{targets_path}'")

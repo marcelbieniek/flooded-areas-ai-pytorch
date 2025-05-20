@@ -1,7 +1,7 @@
 from utils.Config import Config
 from utils.logging import TimeLogger, DataLogger
 from dataloaders.dataloader import get_floodnet_dataloader
-from utils.transforms import classification_image_tf, segmentation_image_tf, segmentation_mask_tf
+from utils.transforms import classification_image_tf, segmentation_image_tf, segmentation_mask_tf, seg_joint_transform
 from utils.train import train_model
 from utils.evaluate import evaluate_model
 from collections import defaultdict
@@ -110,4 +110,4 @@ class Executor():
         if task == "classification":
             return [classification_image_tf]
         if task == "segmentation":
-            return [segmentation_image_tf, segmentation_mask_tf]
+            return [segmentation_image_tf, segmentation_mask_tf, seg_joint_transform]

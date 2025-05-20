@@ -8,7 +8,7 @@ TEST_SEGMENT = "test"
 class Config():
     def __init__(self, config_path: str):
         self.config = self.__load_config(config_path)
-        self.config_name = config_path.replace("/", "_").replace("config_", "").replace(".yml", "").replace(".yaml", "")
+        self.config_name = config_path.replace("/", "_").replace("configs_", "").replace(".yml", "").replace(".yaml", "")
         self.task = self.__get_task()
         self.model = self.__load_model()
         self.loss = self.__load_loss()

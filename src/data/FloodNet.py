@@ -42,7 +42,7 @@ class FloodNetClassification(Dataset):
 
 
 class FloodNetSegmentation(Dataset):
-    def __init__(self, img_dir: str, mask_dir: str, classes: dict = None, image_transform=None, mask_transform=None):
+    def __init__(self, img_dir: str, mask_dir: str, classes: dict = None, image_transform = None, mask_transform = None, joint_transform = None):
         """
         Args:
             img_dir (string): Path to root directory with all the images.
@@ -55,6 +55,7 @@ class FloodNetSegmentation(Dataset):
         self.mask_dir = mask_dir
         self.image_transform = image_transform
         self.mask_transform = mask_transform
+        self.joint_transform = joint_transform
         self.images = sorted(os.listdir(img_dir))
         if classes:
             self.classes = dict(sorted(classes.items(), key=lambda item: item[0]))
@@ -68,7 +69,10 @@ class FloodNetSegmentation(Dataset):
         image_name = self.images[index]
         image = Image.open(os.path.join(self.image_dir, image_name)).convert("RGB")
         label_name = image_name.replace(".jpg", "_lab.png")
-        mask = Image.open(os.path.join(self.mask_dir, label_name))
+        mask = Image.open(os.path.join(self.mask_dir, label_name)).convert("L")
+
+        if self.joint_transform:
+            image, mask = self.joint_transform(image, mask)
         
         if self.image_transform:
             image = self.image_transform(image)

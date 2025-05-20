@@ -3,7 +3,6 @@ model:
   name: enet
   params:
     num_classes: 10
-    pretrained: true
 loss: cross_entropy
 optimizer:
   name: adam
