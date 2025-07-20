@@ -15,7 +15,7 @@ The project uses the [FloodNet](https://github.com/BinaLab/FloodNet-Challenge-EA
 │ ├── classification/ # Configs for classification models
 │ └── segmentation/ # Configs for segmentation models
 │
-├── dataset/ # Contains dataset root foler, metadata and class mappings
+├── dataset/ # Contains dataset root foler, CSV classification data, class mappings
 │
 ├── src/ # Main source code
 │ ├── data/ # Dataset class definitions, miscellaneous data related items
@@ -34,6 +34,45 @@ The project uses the [FloodNet](https://github.com/BinaLab/FloodNet-Challenge-EA
 ```
 
 ## Configuration
+The project is based on YAML configuration files. They allow for easy customisation of the machine learning task being tested, models, evalution metrics collected and more. Below is a sample configuration file:
+```yaml
+task: segmentation # Type of ML task
+model: # Model choice and related parameters
+  name: deeplabv3
+  params:
+    num_classes: 10 # number of classes in the task
+    pretrained: true # whether the model is pretrained or not, model specific
+loss: cross_entropy # Loss function
+optimizer: # Optimizer
+  name: adam
+  lr: 0.001
+metrics: # Evalutation metrics to be collected
+  accuracy:
+    task: multiclass
+    num_classes: 10
+batch_size: 32
+train: # Training data and number of epochs
+  epochs: 30
+  inputs: dataset/FloodNet_dataset/train/image
+  targets: dataset/FloodNet_dataset/train/label
+val: # Validation data
+  inputs: dataset/FloodNet_dataset/val/image
+  targets: dataset/FloodNet_dataset/val/label
+test: # Test data
+  inputs: dataset/FloodNet_dataset/test/image
+  targets: dataset/FloodNet_dataset/test/label
+```
+
+Configuration files are located in the `configs/` folder. You can use the preexisting ones, modify them or create your own, following the defined structure.
+
+### Currently supported config parameters
+- task: classification/segmentation
+- model:
+    - name: inception/resnet50/xception/deeplabv3/enet/pspnet/unet3plus
+    - num_classes
+
+
+
 
 ## Models
 
