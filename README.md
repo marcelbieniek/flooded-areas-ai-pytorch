@@ -9,6 +9,25 @@ In the face of these challenges, it is crucial to develop technologies that enab
 ## 📊 Dataset
 The project uses the [FloodNet](https://github.com/BinaLab/FloodNet-Challenge-EARTHVISION2021) dataset (not included in this repository), a curated collection of real-world aerial images for flood scene understanding and analysis. It is designed to support both image classification and semantic segmentation tasks in the context of flood disaster response.
 
+Classes in the dataset:
+```json
+{
+    "0": "Background",
+    "1": "Building-flooded",
+    "2": "Building-non-flooded",
+    "3": "Road-flooded",
+    "4": "Road-non-flooded",
+    "5": "Water",
+    "6": "Tree",
+    "7": "Vehicle",
+    "8": "Pool",
+    "9": "Grass"
+}
+```
+
+### Remarks
+The dataset is not perfect. While working on the project, I discovered that a few image labels //TODO were faulty. The dataset distinguishes between 10 different classes of objects (indices 0-9), yet those labels contained pixels marked with indices 0-11, thus being meaningless. In order to continue work, such image-label pairs were deleted from the dataset.
+
 ## 📁 Project Structure
 ```yaml
 ├── configs/ # YAML config files for model training
@@ -50,6 +69,10 @@ metrics: # Evalutation metrics to be collected
   accuracy:
     task: multiclass
     num_classes: 10
+  iou:
+    task: multiclass
+    num_classes: 10
+    average: none
 batch_size: 32
 train: # Training data and number of epochs
   epochs: 30
