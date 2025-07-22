@@ -114,10 +114,9 @@ optional arguments:
   -c CUDA_DEVICE, --cuda-device CUDA_DEVICE
                         Index of CUDA device to compute on, if available (default=0).
   -v, --verbose         Print additional information during execution.
-  -r RUN, --run RUN     Specify which model configuration to run. All configuration files are expected to be in 'config' directory, positioned at
-                        the root of the project. Allowed values are: - all -- Run all configs found in the 'config' directory. - file_name -- Path
-                        to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'config'
-                        directory). - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further
-                        subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
+  -r RUN, --run RUN     Specify which model configuration to run. All configuration files are expected to be in 'config' directory, positioned at the root of the project. Allowed values are:
+                        - all -- Run all configs found in the 'config' directory.
+                        - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'config' directory).
+                        - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
   -l, --logs            Collect logs and models to files.
   ```
