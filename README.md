@@ -26,7 +26,7 @@ Classes in the dataset:
 ```
 
 ### Remarks
-The dataset is not perfect. While working on the project, I discovered that a few image labels //TODO were faulty. The dataset distinguishes between 10 different classes of objects (indices 0-9), yet those labels contained pixels marked with indices 0-11, thus being meaningless. In order to continue work, such image-label pairs were deleted from the dataset.
+The dataset is not perfect. While working on the project, I discovered that image *7606* was faulty. The dataset distinguishes between 10 different classes of objects (indices 0-9), yet this label contained pixels marked with indices 0-11, thus being meaningless. In order to continue work, this image-label pair was deleted from the dataset.
 
 ## 📁 Project Structure
 ```yaml
@@ -103,5 +103,21 @@ Configuration files are located in the `configs/` folder. You can use the preexi
 
 ## Execution
 
-#### Run program:
-``` python3 src/main.py -c 0 -v -l ```
+#### Usage
+```
+usage: python3 src/main.py [-h] [-c CUDA_DEVICE] [-v] [-r RUN] [-l]
+
+An evaluation workflow for classification and semantic segmentation neural network models.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c CUDA_DEVICE, --cuda-device CUDA_DEVICE
+                        Index of CUDA device to compute on, if available (default=0).
+  -v, --verbose         Print additional information during execution.
+  -r RUN, --run RUN     Specify which model configuration to run. All configuration files are expected to be in 'config' directory, positioned at
+                        the root of the project. Allowed values are: - all -- Run all configs found in the 'config' directory. - file_name -- Path
+                        to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'config'
+                        directory). - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further
+                        subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
+  -l, --logs            Collect logs and models to files.
+  ```
