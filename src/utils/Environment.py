@@ -26,7 +26,7 @@ class Environment():
                                  - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'config' directory).
                                  - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
                                  """)
-        self.parser.add_argument("-l", "--logs", action="store_true", default=False, help="Collect logs and models to files.")
+        self.parser.add_argument("-l", "--logs", action="store_true", default=False, help="Collect logs and save models to files.")
         self.args = self.parser.parse_args()
 
         self.device = None

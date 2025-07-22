@@ -116,5 +116,5 @@ optional arguments:
                         - all -- Run all configs found in the 'config' directory.
                         - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'config' directory).
                         - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
-  -l, --logs            Collect logs and models to files.
+  -l, --logs            Collect logs and save models to files.
   ```
