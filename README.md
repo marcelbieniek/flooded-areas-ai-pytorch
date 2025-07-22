@@ -101,9 +101,7 @@ Configuration files are located in the `configs/` folder. You can use the preexi
 
 ## Installation
 
-## Execution
-
-#### Usage
+## Usage
 ```
 usage: python3 src/main.py [-h] [-c CUDA_DEVICE] [-v] [-r RUN] [-l]
 
