@@ -2,5 +2,6 @@
 .vscode/
 **/__pycache__
 dataset/FloodNet_dataset/
+dataset/FloodNet-Supervised_v1.0.zip
 results/
 **.pth

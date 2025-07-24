@@ -1,0 +1,19 @@
+11483 - zbiór testowy - zjebana maska, cały dom is missing, dodać do pracy
+7543 - drzewa słabo zaznaczone, jest tło, obraz jest out of focus
+7233, 7231 - prześwietlone
+10843 - dźwig, boczna droga, inne maszyny budowlane zaznaczone jako trawa
+7339 - maska jest odwrócona względem obrazu
+7315 - maska odwrócona, trawa w pewnych częściach jest jako tło
+
+
+wnioski:
+dobry zbiór danych remains a challenge
+dużo zdjęć jest out of focus, co może przeszkadzać
+są zdjęcia prześwietlone
+maski są wątpliwej jakości - jedne są dobre, na innych brakuje obiektów, klasy są niedokładnie zaznaczone
+bardzo dużo zdjęć to tylko pola, niewiele zalanych obszarów zamieszkałych
+więcej epok mogłoby pomóc
+dużo trawy, bardzo mały % obrazów to pojazdy (understandable), budynki itp, co widać w wynikach iou
+augmentacja dużo nie dała bo obrazy są z nieba więc odbicie dużo nie zmienia
+dodać o usunięciu jednego sampla
+mało tła, dlatego iou słabe dla niego
