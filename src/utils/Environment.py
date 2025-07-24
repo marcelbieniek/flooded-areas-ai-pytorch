@@ -27,6 +27,7 @@ class Environment():
                                  - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
                                  """)
         self.parser.add_argument("-l", "--logs", action="store_true", default=False, help="Collect logs and models to files.")
+        self.parser.add_argument("-t", "--test", action="store_true", default=False, help="Enable model testing. If ")
         self.args = self.parser.parse_args()
 
         self.device = None
