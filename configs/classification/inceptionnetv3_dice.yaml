@@ -10,15 +10,17 @@ optimizer:
   name: adam
   lr: 0.001
 metrics:
-  accuracy:
-    task: binary
-  precision:
-    task: binary
-  recall:
-    task: binary
-  mcc:
-    task: binary
-  cohen_kappa:
+  # accuracy:
+  #   task: binary
+  # precision:
+  #   task: binary
+  # recall:
+  #   task: binary
+  # mcc:
+  #   task: binary
+  # cohen_kappa:
+  #   task: binary
+  iou:
     task: binary
 batch_size: 64
 train:

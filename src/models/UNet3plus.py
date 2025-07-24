@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class UNet3plus():
-    def __init__(self, num_classes: int = 10, input_shape=[3, 299, 299], deep_supervision=False, cgm=False):
+    def __init__(self, num_classes: int = 10, input_shape=[3, 288, 288], deep_supervision=False, cgm=False):
         self.name = "UNet3+"
         self.num_classes = num_classes
         self.training = False

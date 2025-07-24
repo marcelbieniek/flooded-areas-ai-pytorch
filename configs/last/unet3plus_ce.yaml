@@ -1,0 +1,40 @@
+task: segmentation
+model:
+  name: unet3plus
+  params:
+    num_classes: 10
+loss: cross_entropy
+optimizer:
+  name: adam
+  lr: 0.001
+metrics:
+  accuracy:
+    task: multiclass
+    num_classes: 10
+  precision:
+    task: multiclass
+    num_classes: 10
+  recall:
+    task: multiclass
+    num_classes: 10
+  mcc:
+    task: multiclass
+    num_classes: 10
+  cohen_kappa:
+    task: multiclass
+    num_classes: 10
+  iou:
+    task: multiclass
+    num_classes: 10
+    average: none
+batch_size: 16
+train:
+  epochs: 30
+  inputs: dataset/FloodNet_dataset/train/image
+  targets: dataset/FloodNet_dataset/train/label
+val:
+  inputs: dataset/FloodNet_dataset/val/image
+  targets: dataset/FloodNet_dataset/val/label
+test:
+  inputs: dataset/FloodNet_dataset/test/image
+  targets: dataset/FloodNet_dataset/test/label
