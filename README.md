@@ -100,6 +100,28 @@ Configuration files are located in the `configs/` folder. You can use the preexi
 ## Models
 
 ## Installation
+If you want to try this project for yourself, follow these steps to get started:
+
+0. System requirements:
+    - your preferred Linux distro
+    - Python 3.8.10
+    - a GPU is highly recommended
+1. Clone this repository to your desired location.
+    ```
+    git clone https://github.com/marcelbieniek/flooded-areas-ai-pytorch.git
+    ```
+2. Create a virtual environment.
+    ```
+    python3 -m venv .venv
+    ```
+3. Activate the virtual environment.
+    ```
+    source .venv/bin/activate
+    ```
+4. Install dependencies from `requirements.txt`.
+    ```
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 ```
@@ -117,4 +139,4 @@ optional arguments:
                         - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'config' directory).
                         - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
   -l, --logs            Collect logs and save models to files.
-  ```
+```
