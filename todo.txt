@@ -3,3 +3,4 @@
 - exception catcher? for common things like wrong input/traget size (train/val/test)
     - so exceptions aren't so scary
     - so the program can exit gracefully and save current progress (so you don't loose at least the results if it fails on eg. second to last epoch)
+- add model base class
