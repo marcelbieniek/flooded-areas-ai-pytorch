@@ -4,7 +4,6 @@ model:
   params:
     num_classes: 10
     pretrained: true
-  save_path: ./
 loss: cross_entropy
 optimizer:
   name: adam
