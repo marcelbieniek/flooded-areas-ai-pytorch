@@ -4,9 +4,9 @@ from utils.Config import Config
 from utils.logging import TimeLogger, DataLogger
 from utils.utils import prepare_data
 
-def evaluate_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str, verbose: bool):
+def test_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str, verbose: bool):
     if verbose:
-        print("Validating...")
+        print("Testing...")
     model = config.model
     loss_fn = config.loss
     metrics = config.metrics
@@ -15,7 +15,7 @@ def evaluate_model(dataloader: DataLoader, config: Config, timer: TimeLogger, lo
     all_outputs = []
     all_targets = []
 
-    log_name = f"{config.config_name}_val"
+    log_name = f"{config.config_name}_test"
     time_log_name = f"{log_name}_time"
     timer.start(time_log_name)
 

@@ -71,8 +71,14 @@ class Environment():
             if self.verbose:
                 print(f"----- Starting execution of config: {config} -----")
 
-            executor = Executor(config, self.device, self.verbose)
-            # executor.execute_config()
+            executor = None
+            if self.test_setup == TestSetup.AFTER_TRAINING:
+                executor = Executor(config, self.device, self.verbose)
+            elif self.test_setup == TestSetup.TESTING_ONLY:
+                executor = Executor(config, self.device, self.verbose, self.test_setup, self.args.test)
+            if executor == None:
+                raise ValueError("Error occurred! Could not set up config execution")
+            executor.execute_config()
 
             if self.logging:
                 executor.save_logs(logs_dir)
@@ -140,7 +146,7 @@ class Environment():
         self.test_setup = TestSetup.TESTING_ONLY
         run_plan_arg = self.args.run
         if not run_plan_arg.endswith((".yaml", ".yml")):
-            raise ValueError(f"Invalid or no configuration file provided for model testing.")
+            raise ValueError("Invalid or no configuration file provided for model testing.")
         self.__validate_model_path()
         if self.verbose:
             print(f"----- Testing model '{self.args.test}'...")

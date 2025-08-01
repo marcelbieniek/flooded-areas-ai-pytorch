@@ -2,6 +2,7 @@ import torch
 from torch.utils.data import DataLoader
 from utils.Config import Config
 from utils.logging import TimeLogger, DataLogger
+from utils.utils import prepare_data
 
 def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logger: DataLogger, device: str, verbose: bool):
     if verbose:
@@ -29,7 +30,6 @@ def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logge
         optimizer.zero_grad()
 
         outputs = model.forward(X)
-        print(outputs.shape)
         loss = model.calculate_loss(loss_fn, outputs, y)
 
         # backpropagation
@@ -73,14 +73,3 @@ def train_model(dataloader: DataLoader, config: Config, timer: TimeLogger, logge
     if device == 'cuda':
         torch.cuda.synchronize()
     timer.end(time_log_name)
-
-def prepare_data(X, y, device, task):
-    X = X.to(device)
-
-    if task == "classification":
-        y = y.to(device).float().unsqueeze(1)
-    
-    if task == "segmentation":
-        y = y.to(device).squeeze().long()
-    
-    return X, y

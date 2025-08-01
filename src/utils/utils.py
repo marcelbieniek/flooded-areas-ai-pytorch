@@ -20,3 +20,14 @@ def plot_predictions(model, data_loader, classes):
         plt.axis('off')
     plt.tight_layout()
     plt.savefig("plot")
+
+def prepare_data(X, y, device, task):
+    X = X.to(device)
+
+    if task == "classification":
+        y = y.to(device).float().unsqueeze(1)
+
+    if task == "segmentation":
+        y = y.to(device).squeeze().long()
+
+    return X, y
