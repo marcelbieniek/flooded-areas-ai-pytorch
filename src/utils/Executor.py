@@ -4,18 +4,22 @@ from dataloaders.dataloader import get_floodnet_dataloader
 from utils.transforms import classification_image_tf, segmentation_image_tf, segmentation_mask_tf, seg_joint_transform
 from utils.train import train_model
 from utils.evaluate import evaluate_model
+from utils.test import test_model
+from utils.TestSetup import TestSetup
 from collections import defaultdict
 import csv
 import json
 import pathlib
 
 class Executor():
-    def __init__(self, config_path: str, device: str, verbose: bool = False):
+    def __init__(self, config_path: str, device: str, verbose: bool = False, test_setup: TestSetup = TestSetup.NONE, model_path: str = ""):
         self.config = Config(config_path)
         self.device = device
         self.verbose = verbose
         self.time_logger = TimeLogger()
         self.data_logger = DataLogger()
+        self.test_setup = test_setup
+        self.model_path = model_path
 
     def execute_config(self):
         if self.verbose:
@@ -24,7 +28,12 @@ class Executor():
             print(f"- Optimizer: {self.config.optimizer}")
             print(f"- Metrics: {self.config.metrics}")
 
-        train_data, val_data, _ = self.__get_data()
+        train_data, val_data, test_data = self.__get_data()
+
+        if self.test_setup == TestSetup.TESTING_ONLY:
+            self.__test_model_only(test_data=test_data)
+
+            return
 
         for epoch in range(self.config.epochs):
             if self.verbose:
@@ -48,9 +57,12 @@ class Executor():
                 print("----- Logged data -----")
                 print(json.dumps(self.data_logger.logs, indent=4))
 
+        if self.test_setup == TestSetup.AFTER_TRAINING:
+            test_model(test_data, self.config, self.time_logger, self.data_logger, self.device, self.verbose)
+
         if self.verbose:
             print("Done!")
-    
+
     def save_model(self, models_dir: pathlib.Path):
         self.config.model.save_model(models_dir / f"{self.config.config_name}.pth")
 
@@ -63,6 +75,15 @@ class Executor():
             writer = csv.writer(f)
             writer.writerow(fieldnames)
             writer.writerows(rows)
+
+    def __test_model_only(self, test_data):
+        if self.model_path == "":
+            raise ValueError("Error occured! No path to model found.")
+        self.config.model.load_model(self.model_path)
+        test_model(test_data, self.config, self.time_logger, self.data_logger, self.device, self.verbose)
+
+        if self.verbose:
+            print("Done!")
 
     def __combine_logs(self):
         combined = defaultdict(list)
