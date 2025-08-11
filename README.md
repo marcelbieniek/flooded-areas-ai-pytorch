@@ -26,7 +26,7 @@ Classes in the dataset:
 ```
 
 ### Remarks
-The dataset is not perfect. While working on the project, I discovered that image *7606* was faulty. The dataset distinguishes between 10 different classes of objects (indices 0-9), yet this label contained pixels marked with indices 0-11, thus being meaningless. In order to continue work, this image-label pair was deleted from the dataset.
+The dataset is not perfect. While working on the project, I discovered that image *7606* from the training set was faulty. The dataset distinguishes between 10 different classes of objects (indices 0-9), yet this label contained pixels marked with indices 0-11, thus being meaningless. In order to continue work, this image-label pair was deleted from the dataset.
 
 ## 📁 Project Structure
 ```yaml
