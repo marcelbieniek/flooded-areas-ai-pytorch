@@ -19,7 +19,7 @@ class DeepLabV3():
 
     def parameters(self):
         return self.model.parameters()
-    
+
     def train_mode(self):
         self.training = True
         self.model.train()
@@ -33,7 +33,7 @@ class DeepLabV3():
 
     def save_model(self, path):
         torch.save(self.model.state_dict(), path)
-    
+
     def load_model(self, path):
         self.model.load_state_dict(torch.load(path, weights_only=True))
 
