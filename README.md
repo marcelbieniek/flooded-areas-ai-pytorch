@@ -89,15 +89,105 @@ test: # Test data
 Configuration files are located in the `configs/` folder. You can use the preexisting ones, modify them or create your own, following the defined structure.
 
 ### Currently supported config parameters
-- task: classification/segmentation
-- model:
-    - name: inception/resnet50/xception/deeplabv3/enet/pspnet/unet3plus
-    - num_classes
+Below you will find a list of currently supported parameters you can use when creating a configuration file. It is most convenient to copy and/or modify one of the existing configuration files.
 
+---
 
+`task` - Type of ML task to run. Possible values:
+- classification
+- segmentation
+
+---
+
+`model` - Type of network architecture to use. Possible parameters:
+
+`name` - Name of the model:
+
+For `classification` task:
+- inception (InceptionNetV3)
+  - additional parameters `params`:
+    - num_classes [int] - number of classes in the dataset (default 1 for binary classification)
+    - pretrained [bool] - whether the model should come pretrained with ImageNet weights (default true)
+    - aux_logits [bool] - whether the model should use its auxilary classifier (default true)
+- resnet50 (ResNet50)
+  - additional parameters `params`:
+    - num_classes [int] - number of classes in the dataset (default 1 for binary classification)
+    - pretrained [bool] - whether the model should come pretrained with ImageNet weights (default true)
+- xception (Xception)
+  - additional parameters `params`:
+    - num_classes [int] - number of classes in the dataset (default 1 for binary classification)
+    - pretrained [bool] - whether the model should come pretrained with ImageNet weights (default true)
+
+For `segmentation` task:
+- deeplabv3 (DeepLabV3)
+  - additional parameters `params`:
+    - num_classes [int] - number of classes in the dataset (default 10 for semantic semgentation on FloodNet dataset)
+    - pretrained [bool] - model starts pretrained with ImageNet weights (default true)
+- pspnet (PSPNet)
+  - additional parameters `params`:
+    - num_classes [int] - number of classes in the dataset (default 10 for semantic semgentation on FloodNet dataset)
+    - pretrained [bool] - model starts pretrained with ImageNet weights (default true)
+- enet (ENet)
+  - additional parameters `params`:
+    - num_classes [int] - number of classes in the dataset (default 10 for semantic semgentation on FloodNet dataset)
+- unet3plus (UNet3+)
+- additional parameters `params`:
+    - num_classes [int] - number of classes in the dataset (default 10 for semantic semgentation on FloodNet dataset)
+    - deep_supervision [bool] - use Deep Supervision (default false, experimental feature)
+    - cgm [bool] - use Classification Guided Module (default false, experimental feature)
+
+---
+
+`loss` - loss function to use. Possible values:
+
+For `classification` task:
+- bce_with_logits - Binary Cross Entropy with Logits
+- binary_dice - Dice loss for binary tasks
+
+For `segmentation` task::
+- cross_entropy - Cross Entropy
+- multiclass_dice - Dice loss for multiclass segmentation
+
+---
+
+`optimizer` - Type of optimizer to use. Possible parameters:
+
+`name` - Name of optimizer algorithm. Possible values:
+- adam - Adam
+- sgd - Stochastic Gradient Descent
+
+`lr` - Learning rate to use for the optimizer.
+
+---
+
+`metrics` - Metrics to compute for each epoch. Possible parameters:
+- accuracy
+- precision
+- recall
+- mcc (Matthews Correlation Coefficient)
+- iou (Intersection over Union, Jaccard Index)
+
+All metrics are implemented using the [TorchMetrics](https://lightning.ai/docs/torchmetrics/stable/) library. They take additional parameters as per the individual metric API, where name of the parameter is the argument for the metric function, followed by the value. See preexisting configuration files to learn more.
+
+---
+
+`batch_size` - size of batch for each pass through the network.
+
+---
+
+`train` - Parameters for model training. Possible parameters:
+
+`epochs` - Number of epochs to train the model for.
+
+`inputs` - Path to directory with input images, from project root.
+
+`targets` - Path to image labels:
+
+For `classification` task:
 
 
 ## Models
+Currently implemented architectures:
 
 ## Installation
 If you want to try this project for yourself, follow these steps to get started:

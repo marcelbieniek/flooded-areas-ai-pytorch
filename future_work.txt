@@ -1,4 +1,3 @@
-- add testing
 - implement transforms as callbacks to be configurable
 - exception catcher? for common things like wrong input/traget size (train/val/test)
     - so exceptions aren't so scary
