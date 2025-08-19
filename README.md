@@ -249,7 +249,7 @@ optional arguments:
                         - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'configs' directory).
                         - subdir_name -- Name of subdirectory inside the 'configs' directory. All configs from this and further subdirectories will be run (can be
                         used for grouping configs eg. run all segmentation models).
-  -l, --logs            Collect logs and models to files.
+  -l, --logs            Collect logs and models to files. They will be saved in 'results/<timestamp of the run>' directory. 
   -t [TEST], --test [TEST]
                         Enable model testing. If no argument is specified, testing will be done on the model being trained. Alternatively you can specify a path to .pt or .pth pytorch model file to
                         test a model trained earlier. Make sure to use the -l argument when training to get the model file. Even a preexisiting model requires a configuration file for input/target
