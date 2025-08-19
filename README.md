@@ -93,13 +93,13 @@ Below you will find a list of currently supported parameters you can use when cr
 
 ---
 
-`task` - Type of ML task to run. Possible values:
+#### `task` - Type of ML task to run. Possible values:
 - classification
 - segmentation
 
 ---
 
-`model` - Type of network architecture to use. Possible parameters:
+#### `model` - Type of network architecture to use. Possible parameters:
 
 `name` - Name of the model:
 
@@ -138,7 +138,7 @@ For `segmentation` task:
 
 ---
 
-`loss` - loss function to use. Possible values:
+#### `loss` - loss function to use. Possible values:
 
 For `classification` task:
 - bce_with_logits - Binary Cross Entropy with Logits
@@ -150,7 +150,7 @@ For `segmentation` task::
 
 ---
 
-`optimizer` - Type of optimizer to use. Possible parameters:
+#### `optimizer` - Type of optimizer to use. Possible parameters:
 
 `name` - Name of optimizer algorithm. Possible values:
 - adam - Adam
@@ -160,7 +160,7 @@ For `segmentation` task::
 
 ---
 
-`metrics` - Metrics to compute for each epoch. Possible parameters:
+#### `metrics` - Metrics to compute for each epoch. Possible parameters:
 - accuracy
 - precision
 - recall
@@ -171,23 +171,43 @@ All metrics are implemented using the [TorchMetrics](https://lightning.ai/docs/t
 
 ---
 
-`batch_size` - size of batch for each pass through the network.
+#### `batch_size` - size of batch for each pass through the network.
 
 ---
 
-`train` - Parameters for model training. Possible parameters:
+#### `train` - Parameters for model training. Possible parameters:
 
 `epochs` - Number of epochs to train the model for.
 
 `inputs` - Path to directory with input images, from project root.
 
-`targets` - Path to image labels:
+`targets` - Path to image labels. Either a CSV file for classification or directory to image labels for semantic segmentation.
 
-For `classification` task:
+#### `val` Parameters for model evaluation. Possible parameters:
 
+`inputs` - Path to directory with input images, from project root.
+
+`targets` - Path to image labels. Either a CSV file for classification or directory to image labels for semantic segmentation.
+
+#### `test` Parameters for model testing. Possible parameters:
+
+`inputs` - Path to directory with input images, from project root.
+
+`targets` - Path to image labels. Either a CSV file for classification or directory to image labels for semantic segmentation.
 
 ## Models
 Currently implemented architectures:
+
+For classification task:
+- InceptionNetV3
+- ResNet50
+- Xception
+
+For segmentation task:
+- DeepLabV3
+- PSPNet
+- ENet
+- Unet3+
 
 ## Installation
 If you want to try this project for yourself, follow these steps to get started:
