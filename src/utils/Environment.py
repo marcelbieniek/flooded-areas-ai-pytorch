@@ -29,7 +29,7 @@ class Environment():
                                  - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'configs' directory).
                                  - subdir_name -- Name of subdirectory inside the 'configs' directory. All configs from this and further subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
                                  """)
-        self.parser.add_argument("-l", "--logs", action="store_true", default=False, help="Collect logs and models to files.")
+        self.parser.add_argument("-l", "--logs", action="store_true", default=False, help="Collect logs and save models to files.")
         self.parser.add_argument("-t", "--test", nargs='?', const=OPT_ARG_DEFAULT_VALUE, help="""Enable model testing. If no argument is specified, testing will be done on the model being trained.
                                  Alternatively you can specify a path to .pt or .pth pytorch model file to test a model trained earlier.
                                  Make sure to use the -l argument when training to get the model file.
