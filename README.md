@@ -52,7 +52,7 @@ The dataset is not perfect. While working on the project, I discovered that imag
 └── README.md # Project overview and usage instructions
 ```
 
-## Configuration
+## 🛠️ Configuration
 The project is based on YAML configuration files. They allow for easy customisation of the machine learning task being tested, models, evalution metrics collected and more. Below is a sample configuration file:
 ```yaml
 task: segmentation # Type of ML task
@@ -93,13 +93,13 @@ Below you will find a list of currently supported parameters you can use when cr
 
 ---
 
-#### `task` - Type of ML task to run. Possible values:
+**`task` - Type of ML task to run. Possible values:**
 - classification
 - segmentation
 
 ---
 
-#### `model` - Type of network architecture to use. Possible parameters:
+**`model` - Type of network architecture to use. Possible parameters:**
 
 `name` - Name of the model:
 
@@ -138,7 +138,7 @@ For `segmentation` task:
 
 ---
 
-#### `loss` - loss function to use. Possible values:
+**`loss` - loss function to use. Possible values:**
 
 For `classification` task:
 - bce_with_logits - Binary Cross Entropy with Logits
@@ -150,7 +150,7 @@ For `segmentation` task::
 
 ---
 
-#### `optimizer` - Type of optimizer to use. Possible parameters:
+**`optimizer` - Type of optimizer to use. Possible parameters:**
 
 `name` - Name of optimizer algorithm. Possible values:
 - adam - Adam
@@ -160,7 +160,7 @@ For `segmentation` task::
 
 ---
 
-#### `metrics` - Metrics to compute for each epoch. Possible parameters:
+**`metrics` - Metrics to compute for each epoch. Possible parameters:**
 - accuracy
 - precision
 - recall
@@ -171,11 +171,11 @@ All metrics are implemented using the [TorchMetrics](https://lightning.ai/docs/t
 
 ---
 
-#### `batch_size` - size of batch for each pass through the network.
+**`batch_size` - size of batch for each pass through the network.**
 
 ---
 
-#### `train` - Parameters for model training. Possible parameters:
+**`train` - Parameters for model training. Possible parameters:**
 
 `epochs` - Number of epochs to train the model for.
 
@@ -183,19 +183,19 @@ All metrics are implemented using the [TorchMetrics](https://lightning.ai/docs/t
 
 `targets` - Path to image labels. Either a CSV file for classification or directory to image labels for semantic segmentation.
 
-#### `val` Parameters for model evaluation. Possible parameters:
+**`val` Parameters for model evaluation. Possible parameters:**
 
 `inputs` - Path to directory with input images, from project root.
 
 `targets` - Path to image labels. Either a CSV file for classification or directory to image labels for semantic segmentation.
 
-#### `test` Parameters for model testing. Possible parameters:
+**`test` Parameters for model testing. Possible parameters:**
 
 `inputs` - Path to directory with input images, from project root.
 
 `targets` - Path to image labels. Either a CSV file for classification or directory to image labels for semantic segmentation.
 
-## Models
+## 🧠 Models
 Currently implemented architectures:
 
 For classification task:
@@ -209,7 +209,7 @@ For segmentation task:
 - ENet
 - Unet3+
 
-## Installation
+## 📦 Installation
 If you want to try this project for yourself, follow these steps to get started:
 
 0. System requirements:
@@ -233,7 +233,7 @@ If you want to try this project for yourself, follow these steps to get started:
     pip install -r requirements.txt
     ```
 
-## Usage
+## 📝 Usage
 ```
 usage: python3 src/main.py [-h] [-c CUDA_DEVICE] [-v] [-r RUN] [-l]
 
@@ -244,9 +244,14 @@ optional arguments:
   -c CUDA_DEVICE, --cuda-device CUDA_DEVICE
                         Index of CUDA device to compute on, if available (default=0).
   -v, --verbose         Print additional information during execution.
-  -r RUN, --run RUN     Specify which model configuration to run. All configuration files are expected to be in 'config' directory, positioned at the root of the project. Allowed values are:
-                        - all -- Run all configs found in the 'config' directory.
-                        - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'config' directory).
-                        - subdir_name -- Name of subdirectory inside the 'config' directory. All configs from this and further subdirectories will be run (can be used for grouping configs eg. run all segmentation models).
-  -l, --logs            Collect logs and save models to files.
+  -r RUN, --run RUN     Specify which model configuration to run. All configuration files are expected to be in 'configs' directory, positioned at the root of the project. Allowed values are:
+                        - all -- Run all configs found in the 'configs' directory.
+                        - file_name -- Path to YAML file to use as config (requires file extension .yaml or .yml; path should begin from first level inside 'configs' directory).
+                        - subdir_name -- Name of subdirectory inside the 'configs' directory. All configs from this and further subdirectories will be run (can be
+                        used for grouping configs eg. run all segmentation models).
+  -l, --logs            Collect logs and models to files.
+  -t [TEST], --test [TEST]
+                        Enable model testing. If no argument is specified, testing will be done on the model being trained. Alternatively you can specify a path to .pt or .pth pytorch model file to
+                        test a model trained earlier. Make sure to use the -l argument when training to get the model file. Even a preexisiting model requires a configuration file for input/target
+                        paths, batch size etc.
 ```
