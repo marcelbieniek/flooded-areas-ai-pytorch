@@ -30,8 +30,9 @@ def segmentation_mask_tf(mask):
 seg_joint_transform = transforms.Compose([
     transforms.Resize((299, 299)),
     # transforms.RandomResizedCrop((320, 320)),
-    # transforms.RandomHorizontalFlip(0.5),
-    # transforms.RandomVerticalFlip(0.5),
+    transforms.RandomHorizontalFlip(0.5),
+    transforms.RandomVerticalFlip(0.5),
 ])
 
-# 320
+# 288 UNet3+
+# 299 everything else

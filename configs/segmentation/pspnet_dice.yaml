@@ -27,15 +27,15 @@ metrics:
   iou:
     task: multiclass
     num_classes: 10
-    average: none
-batch_size: 32
+    average: macro
+batch_size: 1
 train:
-  epochs: 30
+  epochs: 1
   inputs: dataset/FloodNet_dataset/train/image
   targets: dataset/FloodNet_dataset/train/label
 val:
   inputs: dataset/FloodNet_dataset/val/image
   targets: dataset/FloodNet_dataset/val/label
 test:
-  inputs: dataset/FloodNet_dataset/test/image
-  targets: dataset/FloodNet_dataset/test/label
+  inputs: dataset/difficults_test/image6
+  targets: dataset/difficults_test/label6
